@@ -152,6 +152,30 @@ Vector3 TransformNormal(const Vector3& v,const Matrix4x4& m){
 	return result;
 }
 
+Matrix4x4 DirectionToDirection(const Vector3& from,const Vector3& to){
+	Vector3 fromV = from;
+	if(from.dot(to) == -1.0f && from.cross(to).length() == 0.0f){
+		if(from.y != 0.0f){
+			fromV = {from.y,-from.x,0.0f};
+		}else if(from.z != 0.0f){
+			fromV = {from.z,0.0f,-from.x};
+		}
+	}
+
+	// 回転の軸
+	Vector3 n = fromV.cross(to).Normalize();
+	float cosTheta = fromV.dot(to);
+	float sinTheta = fromV.cross(to).length();
+	float mCosAngle = (1.0f - cosTheta);
+
+	return Matrix4x4{
+		(n.x * n.x) * mCosAngle + cosTheta,(n.x * n.y) * mCosAngle + n.z * sinTheta,(n.x * n.z) * mCosAngle - n.y * sinTheta,0.0f,
+		(n.x * n.y) * mCosAngle - n.z * sinTheta,(n.y * n.y) * mCosAngle + cosTheta,(n.y * n.z) * mCosAngle + n.x * sinTheta,0.0f,
+		(n.x * n.z) * mCosAngle + n.y * sinTheta,(n.y * n.z) * mCosAngle - n.x * sinTheta,(n.z * n.z) * mCosAngle + cosTheta,0.0f,
+		0.0f,0.0f,0.0f,1.0f
+	};
+}
+
 Matrix4x4 MakeMatrix::PerspectiveFov(const float& fovY,const float& aspectRatio,const float& nearClip,const float& farClip){
 	const float cot = 1.0f / std::tanf(fovY / 2.0f);
 	return Matrix4x4(
