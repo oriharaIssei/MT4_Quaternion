@@ -2,6 +2,7 @@
 
 #include <cmath>
 
+struct Quaternion;
 struct Vector3{
 	float x,y,z;
 
@@ -97,5 +98,10 @@ struct Vector3{
 			this->z / len
 		);
 	}
+
+	Vector3 RotateVector(const Quaternion& q)const;
+	static Vector3 RotateVector(const Vector3& v,const Quaternion& q);
+
+	void Show();
 };
 
