@@ -1,30 +1,25 @@
 #include "Matrix4x4.h"
+#include "Quaternion.h"
 #include "Vector3.h"
 
 #include <iostream>
 
 int main(){
-	Vector3 from0 = Vector3(1.0f,0.7f,0.5f).Normalize();
-	Vector3 to0 = -from0;
+	Quaternion q1 = {2.0f,3.0f,4.0f,1.0f};
+	Quaternion q2 = {1.0f,3.0f,5.0f,2.0f};
+	Quaternion identity = Quaternion::Identity();
+	Quaternion conj = Quaternion::Conjugation(q1);
+	Quaternion inv = Quaternion::Inverse(q1);
+	Quaternion normal = Quaternion::Normalize(q1);
+	Quaternion mul1 = q1 * q2;
+	Quaternion mul2 = q2 * q1;
 
-	Vector3 from1 = Vector3(-0.6f,0.9f,0.2f).Normalize();
-	Vector3 to1 = Vector3(0.4f,0.7f,-0.5f).Normalize();
+	identity.Show();
+	conj.Show();
+	inv.Show();
+	normal.Show();
+	mul1.Show();
+	mul2.Show();
 
-	Matrix4x4 rotateMatrix[3];
-	rotateMatrix[0] = DirectionToDirection(
-		Vector3(1.0f,0.0f,0.0f).Normalize(),
-		Vector3(-1.0f,0.0f,0.0f).Normalize()
-	);
-	rotateMatrix[1] = DirectionToDirection(
-		from0,to0
-	);
-	rotateMatrix[2] = DirectionToDirection(
-		from1,to1
-	);
-
-	for(size_t i = 0; i < 3; i++){
-		std::cout << "RotateMatrix" << i << std::endl;
-		rotateMatrix[i].Show();
-	}
 	return 0;
 }
