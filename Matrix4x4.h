@@ -43,7 +43,9 @@ namespace MakeMatrix{
 	Matrix4x4 PerspectiveFov(const float& fovY,const float& aspectRatio,const float& nearClip,const float& farClip);
 	Matrix4x4 Orthographic(const float& left,const float& top,const float& right,const float& bottom,const float& nearClip,const float& farClip);
 	Matrix4x4 ViewPort(const float& left,const float& top,const float& width,const float& height,const float& minDepth,const float& maxDepth);
-} // namespace MakeMatrix
+}
 
 Vector3 TransformVector(const Vector3& vec,const Matrix4x4& matrix);
 Vector3 TransformNormal(const Vector3& v,const Matrix4x4& m);
+
+Matrix4x4 DirectionToDirection(const Vector3& from,const Vector3& to);
