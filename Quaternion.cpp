@@ -119,11 +119,13 @@ void Quaternion::Show(){
 Quaternion Slerp(const Quaternion& q0,const Quaternion& q1,float t){
 	float dot = q0.dot(q1);
 	Quaternion rotate = q0;
-
 	/// dot が 0未満なら 反転(逆回転)
 	if(dot < 0){
 		rotate = -rotate;
 		dot = -dot;
+	}
+	if(dot >= 1.0f - LDBL_EPSILON){
+		return rotate * (1.0f - t) + q1 * t;
 	}
 
 	float theta = acosf(dot);
@@ -132,5 +134,5 @@ Quaternion Slerp(const Quaternion& q0,const Quaternion& q1,float t){
 	float scale0 = sinf((1.0f - t) * theta) / sinTheta;
 	float scale1 = sinf(t * theta) / sinTheta;
 
-	return q0 * scale0 + q1 * scale1;
+	return rotate * scale0 + q1 * scale1;
 }

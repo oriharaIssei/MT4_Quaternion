@@ -6,7 +6,7 @@
 
 int main(){
 	Quaternion rotate0 = Quaternion::RotateAxisAngle({0.71f,0.71f,0.0f},0.3f);
-	Quaternion rotate1 = Quaternion::RotateAxisAngle({0.71f,0.0f,0.71f},3.141592f);
+	Quaternion rotate1 = -rotate0;
 
 	Quaternion interpolate0 = Slerp(rotate0,rotate1,0.0f);
 	interpolate0.Show();
