@@ -1,5 +1,7 @@
 #include "Matrix4x4.h"
 
+#include "Quaternion.h"
+
 #include <cmath>
 #include <iomanip>
 #include <iostream>
@@ -81,6 +83,7 @@ void Matrix4x4::Show(){
 		}
 		std::cout << std::endl;
 	}
+	std::cout << std::endl;
 }
 
 Matrix4x4 MakeMatrix::Identity(){ return Matrix4x4({1.0f,0.0f,0.0f,0.0f,0.0f,1.0f,0.0f,0.0f,0.0f,0.0f,1.0f,0.0f,0.0f,0.0f,0.0f,1.0f}); }
@@ -110,6 +113,15 @@ Matrix4x4 MakeMatrix::RotateZ(const float& radian){
 Matrix4x4 MakeMatrix::RotateXYZ(const Vector3& radian){ return MakeMatrix::RotateZ(radian.z) * MakeMatrix::RotateX(radian.x) * MakeMatrix::RotateY(radian.y); }
 
 Matrix4x4 MakeMatrix::RotateXYZ(const Matrix4x4& x,const Matrix4x4& y,const Matrix4x4& z){ return z * x * y; }
+
+Matrix4x4 MakeMatrix::RotateQuaternion(const Quaternion& q){
+	return Matrix4x4({
+		(q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z),2.0f * (q.x * q.y + q.w * q.z),2.0f * (q.x * q.z - q.w * q.y),0.0f,
+		2.0f * (q.x * q.y - q.w * q.z),(q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z),2.0f * (q.y * q.z + q.w * q.x),0.0f,
+		2.0f * (q.x * q.z + q.w * q.y),2.0f * (q.y * q.z - q.w * q.x),(q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z),0.0f,
+		0.0f,0.0f,0.0f,1.0f
+					 });
+}
 
 Matrix4x4 MakeMatrix::RotateAxisAngle(const Vector3& axis,float angle){
 	float sinAngle = sinf(angle);
@@ -157,7 +169,7 @@ Matrix4x4 DirectionToDirection(const Vector3& from,const Vector3& to){
 	if(from.dot(to) == -1.0f && from.cross(to).length() == 0.0f){
 		if(from.y != 0.0f){
 			fromV = {from.y,-from.x,0.0f};
-		}else if(from.z != 0.0f){
+		} else if(from.z != 0.0f){
 			fromV = {from.z,0.0f,-from.x};
 		}
 	}
