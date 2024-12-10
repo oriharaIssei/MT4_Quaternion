@@ -2,7 +2,7 @@
 
 #include "Vector3.h"
 
-//#include <DirectXMath.h>
+struct Quaternion;
 
 struct Matrix4x4{
 	float m[4][4];
@@ -35,6 +35,8 @@ namespace MakeMatrix{
 	Matrix4x4 RotateZ(const float& radian);
 	Matrix4x4 RotateXYZ(const Vector3& radian);
 	Matrix4x4 RotateXYZ(const Matrix4x4& x,const Matrix4x4& y,const Matrix4x4& z);
+
+	Matrix4x4 RotateQuaternion(const Quaternion& q);
 
 	Matrix4x4 RotateAxisAngle(const Vector3& axis,float angle);
 

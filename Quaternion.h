@@ -1,11 +1,14 @@
 #pragma once
 
+#include "Vector3.h"
+
 /// <summary>
 /// 四元数
 /// </summary>
 struct Quaternion{
 	Quaternion(){}
 	Quaternion(float _x,float _y,float _z,float _w):x(_x),y(_y),z(_z),w(_w){}
+	Quaternion(const Vector3& v,float _w):x(v.x),y(v.y),z(v.z),w(_w){}
 
 	float x = 0;
 	float y = 0;
@@ -51,6 +54,8 @@ struct Quaternion{
 
 	static Quaternion Normalize(Quaternion q);
 	Quaternion normalize() const;
+
+	static Quaternion RotateAxisAngle(const Vector3& axis,float angle);
 
 	void Show();
 };

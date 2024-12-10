@@ -74,6 +74,14 @@ Quaternion Quaternion::normalize() const{
 	return *this / norm;
 }
 
+Quaternion Quaternion::RotateAxisAngle(const Vector3& axis,float angle){
+	float halfAngle = angle / 2.0f;
+	return Quaternion(
+		axis * sinf(halfAngle),
+		cosf(halfAngle)
+	);
+}
+
 void Quaternion::Show(){
 	std::cout << std::fixed << std::setprecision(3) << x << " ";
 	std::cout << std::fixed << std::setprecision(3) << y << " ";
