@@ -4,6 +4,25 @@
 #include <iomanip>
 #include <iostream>
 
+#pragma region"Operators"
+Quaternion Quaternion::operator+(const Quaternion& q) const{
+	return {
+		x + q.x,
+		y + q.y,
+		z + q.z,
+		w + q.w,
+	};
+}
+
+Quaternion Quaternion::operator-(const Quaternion& q) const{
+	return {
+		x - q.x,
+		y - q.y,
+		z - q.z,
+		w - q.w,
+	};
+}
+
 Quaternion Quaternion::operator*(const Quaternion& q)const{
 	return {
 		w * q.x + x * q.w + y * q.z - z * q.y, // x'
@@ -21,6 +40,65 @@ Quaternion Quaternion::operator/(float scalar)const{
 		this->w / scalar
 	);
 }
+
+Quaternion* Quaternion::operator=(const Quaternion& q){
+	this->x = q.x;
+	this->y = q.y;
+	this->z = q.z;
+	this->w = q.w;
+	return this;
+}
+
+Quaternion* Quaternion::operator+=(const Quaternion& q){
+	this->x += q.x;
+	this->y += q.y;
+	this->z += q.z;
+	this->w += q.w;
+	return this;
+}
+
+Quaternion* Quaternion::operator*=(const Quaternion& q){
+	this->x *= q.x;
+	this->y *= q.y;
+	this->z *= q.z;
+	this->w *= q.w;
+	return this;
+}
+
+Quaternion* Quaternion::operator*=(float scalar){
+	this->x *= scalar;
+	this->y *= scalar;
+	this->z *= scalar;
+	this->w *= scalar;
+	return this;
+}
+
+Quaternion* Quaternion::operator/=(float scalar){
+	this->x /= scalar;
+	this->y /= scalar;
+	this->z /= scalar;
+	this->w /= scalar;
+	return this;
+}
+
+Quaternion operator*(float scalar,const Quaternion& q){
+	return {
+		q.x * scalar,
+		q.y * scalar,
+		q.z * scalar,
+		q.w * scalar
+	};
+}
+
+Quaternion operator/(float scalar,const Quaternion& q){
+	return {
+		q.x / scalar,
+		q.y / scalar,
+		q.z / scalar,
+		q.w / scalar
+	};
+}
+#pragma endregion
 
 Quaternion Quaternion::Inverse(const Quaternion& q){
 	float normSq = q.normSq();// ノルムの二乗
