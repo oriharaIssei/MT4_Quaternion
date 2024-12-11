@@ -16,7 +16,18 @@ struct Quaternion{
 	float w = 0;
 
 	Quaternion operator*(const Quaternion& q)const;
+	Quaternion operator*(float scalar)const;
 	Quaternion operator/(float scalar)const;
+
+	Quaternion operator+(const Quaternion& q)const;
+	Quaternion operator-()const{
+		return {
+			-x,
+			-y,
+			-z,
+			-w
+		};
+	}
 
 	static Quaternion Identity(){
 		return Quaternion(
@@ -52,6 +63,9 @@ struct Quaternion{
 	static float NormSq(Quaternion q);
 	float normSq() const;
 
+	static float Dot(const Quaternion& q0,const Quaternion& q1);
+	float dot(const Quaternion& q)const;
+
 	static Quaternion Normalize(Quaternion q);
 	Quaternion normalize() const;
 
@@ -59,3 +73,5 @@ struct Quaternion{
 
 	void Show();
 };
+
+Quaternion Slerp(const Quaternion& q0,const Quaternion& q1,float t);
