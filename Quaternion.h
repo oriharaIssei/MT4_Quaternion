@@ -14,17 +14,8 @@ struct Quaternion{
 	float y = 0;
 	float z = 0;
 	float w = 0;
-	Quaternion operator+(const Quaternion& q)const;
-	Quaternion operator-()const{
-		return {
-			-x,
-			-y,
-			-z,
-			-w
-		};
-	}
+
 	Quaternion operator*(const Quaternion& q)const;
-	Quaternion operator*(float scalar)const;
 	Quaternion operator/(float scalar)const;
 
 	static Quaternion Identity(){
@@ -64,12 +55,7 @@ struct Quaternion{
 	static Quaternion Normalize(Quaternion q);
 	Quaternion normalize() const;
 
-	static float Dot(const Quaternion& q0,const Quaternion& q1);
-	float dot(const Quaternion& q)const;
-
 	static Quaternion RotateAxisAngle(const Vector3& axis,float angle);
 
 	void Show();
 };
-
-Quaternion Slerp(const Quaternion& q0,const Quaternion& q1,float t);

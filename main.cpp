@@ -5,19 +5,19 @@
 #include <iostream>
 
 int main(){
-	Quaternion rotate0 = Quaternion::RotateAxisAngle({0.71f,0.71f,0.0f},0.3f);
-	Quaternion rotate1 = Quaternion::RotateAxisAngle({0.71f,0.0f,0.71f},3.141592f);
+	Quaternion rotate = Quaternion::RotateAxisAngle(
+		Vector3(1.0f,0.4f,-0.2f).Normalize(),0.45f
+	);
+	rotate.Show();
 
-	Quaternion interpolate0 = Slerp(rotate0,rotate1,0.0f);
-	interpolate0.Show();
-	Quaternion interpolate1 = Slerp(rotate0,rotate1,0.3f);
-	interpolate1.Show();
-	Quaternion interpolate2 = Slerp(rotate0,rotate1,0.5f);
-	interpolate2.Show();
-	Quaternion interpolate3 = Slerp(rotate0,rotate1,0.7f);
-	interpolate3.Show();
-	Quaternion interpolate4 = Slerp(rotate0,rotate1,1.0f);
-	interpolate4.Show();
+	Matrix4x4 rotateMat = MakeMatrix::RotateQuaternion(rotate);
+	rotateMat.Show();
+
+	Vector3 pointY = {2.1f,-0.9f,1.3f};
+	Vector3 rotateByQuaternion = Vector3::RotateVector(pointY,rotate);
+	rotateByQuaternion.Show();
+	Vector3 rotateByMatrix = TransformVector(pointY,rotateMat);
+	rotateByMatrix.Show();
 
 	return 0;
 }
