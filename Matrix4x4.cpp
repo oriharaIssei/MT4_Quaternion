@@ -1,10 +1,12 @@
 #include "Matrix4x4.h"
 
-#include <cmath>
+#include "assert.h"
+
 #include <iomanip>
 #include <iostream>
 
-#include "assert.h"
+#include <cmath>
+#include <numbers>
 
 Matrix4x4 Matrix4x4::operator+(const Matrix4x4& another) const{
 	Matrix4x4 result;
@@ -152,20 +154,33 @@ Vector3 TransformNormal(const Vector3& v,const Matrix4x4& m){
 	return result;
 }
 
+const float PI = 3.14159265;
 Matrix4x4 DirectionToDirection(const Vector3& from,const Vector3& to){
-	Vector3 fromV = from;
-	if(from.dot(to) == -1.0f && from.cross(to).length() == 0.0f){
-		if(from.y != 0.0f){
-			fromV = {from.y,-from.x,0.0f};
-		}else if(from.z != 0.0f){
-			fromV = {from.z,0.0f,-from.x};
+	Vector3 fromV = from.Normalize();
+	Vector3 toV = to.Normalize();
+	float dot = fromV.dot(toV);
+
+	// fromt と to が 逆方向なら
+	if(dot < -0.999999f){
+		// z軸を軸 として回転
+		Vector3 axis = fromV.cross(Vector3(0.0f,0.0f,1.0f));
+		if(axis.length() < 0.000001f){
+			// from と z軸が同じ方向なら x軸を軸 として回転
+			axis = fromV.cross(Vector3(1.0f,0.0f,0.0f));
 		}
+		axis = axis.Normalize();
+		return MakeMatrix::RotateAxisAngle(axis,PI);
 	}
 
-	// 回転の軸
-	Vector3 n = fromV.cross(to).Normalize();
-	float cosTheta = fromV.dot(to);
-	float sinTheta = fromV.cross(to).length();
+	// FromベクトルとToベクトルが同じ方向の場合
+	if(dot > 0.999999f){
+		// 回転しないから 単位行列を返す
+		return MakeMatrix::Identity();
+	}
+
+	Vector3 n = fromV.cross(toV).Normalize();
+	float cosTheta = dot;
+	float sinTheta = std::sqrt(1.0f - cosTheta * cosTheta);
 	float mCosAngle = (1.0f - cosTheta);
 
 	return Matrix4x4{
